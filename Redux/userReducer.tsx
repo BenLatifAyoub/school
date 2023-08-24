@@ -7,14 +7,12 @@ export interface Task {
 export interface UserState {
   username: string;
   email: string;
-  password: string;
   tasks: Task[];
 }
 
 const initialState: UserState = {
   username: "",
   email: "",
-  password: "",
   tasks: [],
 };
 

@@ -1,9 +1,6 @@
 import React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Welcome from "./welcome";
-import { useLocalNotification } from "../useLocalNotification";
-import { schedulePushNotification } from "../handle-local-notification";
-import * as Notifications from "expo-notifications";
 
 type RootStackParamList = {
   Login: undefined;

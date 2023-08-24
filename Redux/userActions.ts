@@ -16,9 +16,9 @@ export const updatePassword = (password: string) => ({
   type: 'UPDATE_PASSWORD',
   payload: password,
 });
-export const updateUser = (email: string, username: any, password: string) => ({
+export const updateUser = (email: any, username: any) => ({
   type: 'UPDATE_USER',
-  payload: { email, username, password}
+  payload: { email, username }
 });
 export const addTask = (newTask: Task) => ({
   type: "ADD_TASK",

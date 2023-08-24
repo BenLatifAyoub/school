@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Auth, getAuth } from "firebase/auth";
+import React, { useEffect, useRef, useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
@@ -13,21 +12,19 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { app } from "../firebase";
-import {
-  getTextTitleStyles,
-  styles,
-  getTextNotesStyles,
-} from "../styles/AddTask";
+import { getTextTitleStyles, styles } from "../styles/AddTask";
 import { addTask } from "../Redux/userActions";
-import { Task, UserState } from "../Redux/userReducer";
+import { Task } from "../Redux/userReducer";
+import Icon from "react-native-vector-icons/EvilIcons";
+import * as Notifications from "expo-notifications";
 
-const authInstance: Auth = getAuth(app);
+
 
 type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   SignUp: undefined;
+  Task: undefined;
 };
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -46,9 +43,14 @@ const AddTasks: React.FC<Props> = ({ navigation }) => {
   const [selectedTitleInput, setSelectedTitleInput] = useState("");
   const [selectedNoteInput, setSelectedNoteInput] = useState("");
   const [email, setEmail] = useState("");
-  const [descInputRef, setDescInputRef] = useState<TextInput | null>(null);
+  const descInputRef = useRef<TextInput | null>(null);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (descInputRef.current) {
+      descInputRef.current.focus();
+    }
+  }, []);
   const showDatePicker = () => {
     setDatePickerVisible(true);
   };
@@ -76,7 +78,7 @@ const AddTasks: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleDone = async () => {
-    if (!selectedDate) {
+    if (!selectedDate || !desc) {
       console.log("noo");
       return;
     }
@@ -90,13 +92,24 @@ const AddTasks: React.FC<Props> = ({ navigation }) => {
       }),
     };
 
-    dispatch(addTask(newTask)); // Dispatch the async action
+    try {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Upcoming Task",
+          body: `You have a task "${newTask.disc}" at "${newTask.time}"`,
+        },
+        trigger: new Date(newTask.date + " " + newTask.time),
+      });
+      console.log("Notification scheduled successfully:", newTask.disc);
+    } catch (error) {
+      console.error("Error scheduling notification:", error);
+    }
+
+    dispatch(addTask(newTask));
+    console.log(userName);
     setDesc("");
     setSelectedDate(new Date());
-
-    console.log(userName);
-
-    navigation.goBack();
+    navigation.navigate("Task");
   };
 
   return (
@@ -104,26 +117,28 @@ const AddTasks: React.FC<Props> = ({ navigation }) => {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <View style={styles.row}>
+        <TouchableOpacity style={styles.back} onPress={() => handleGoBack()}>
+          <Icon name="close-o" style={styles.icon1}></Icon>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.Donebutton}
+          onPress={() => handleDone()}
+        >
+          <Icon name="check" style={styles.icon1}></Icon>
+        </TouchableOpacity>
+      </View>
       <TextInput
         textBreakStrategy="simple"
         clearButtonMode="never"
-        selectionColor="rgba(85,103,248,1)"
+        selectionColor="#E3AD6A"
         placeholder="Title"
         defaultValue={desc}
+        ref={descInputRef}
         style={getTextTitleStyles(selectedTitleInput) as TextStyle}
         onChangeText={(text) => setDesc(text)}
         onFocus={() => setSelectedTitleInput("title")}
         onBlur={() => setSelectedTitleInput("")}
-      />
-      <TextInput
-        textBreakStrategy="simple"
-        clearButtonMode="never"
-        selectionColor="rgba(85,103,248,1)"
-        placeholder="Notes"
-        style={getTextNotesStyles(selectedNoteInput) as TextStyle}
-        onChangeText={(text) => setEmail(text)}
-        onFocus={() => setSelectedNoteInput("title")}
-        onBlur={() => setSelectedNoteInput("")}
       />
       <View style={styles.row}>
         <TouchableOpacity style={styles.button} onPress={showDatePicker}>
@@ -137,12 +152,6 @@ const AddTasks: React.FC<Props> = ({ navigation }) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-      <TouchableOpacity style={styles.back} onPress={() => handleGoBack()}>
-        <Text>Cancel</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.Donebutton} onPress={() => handleDone()}>
-        <Text>Done</Text>
-      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };

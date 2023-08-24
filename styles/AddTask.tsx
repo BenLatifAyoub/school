@@ -7,7 +7,7 @@ export const getTextTitleStyles = (selectedEmailInput: string) => {
     width: 340,
     borderBottomWidth: 1,
     borderColor:
-      selectedEmailInput === "title" ? "rgba(85,103,248,1)" : "black",
+      selectedEmailInput === "title" ? "#E3AD6A" : "black",
     textAlign: "left",
     backgroundColor: "rgba(255,255,255,1)",
     borderStyle: "solid",
@@ -15,22 +15,6 @@ export const getTextTitleStyles = (selectedEmailInput: string) => {
     fontSize: 30,
   };
 };
-export const getTextNotesStyles = (selectedEmailInput: string) => {
-  return {
-    color: "#121212",
-    height: 70,
-    width: 340,
-    borderBottomWidth: 1,
-    borderColor:
-      selectedEmailInput === "title" ? "rgba(85,103,248,1)" : "black",
-    textAlign: "left",
-    backgroundColor: "rgba(255,255,255,1)",
-    borderStyle: "solid",
-    fontSize: 30,
-    marginTop: 20,
-  };
-};
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -40,6 +24,10 @@ export const styles = StyleSheet.create({
 
   icon: {
     fontSize: 40,
+    color: "#E3AD6A",
+  },
+  icon1: {
+    fontSize: 60,
     color: "rgba(128,128,128,1)",
   },
   row: {
@@ -63,6 +51,7 @@ export const styles = StyleSheet.create({
     fontSize: 30,
   },
   back: {
+    marginRight: 250,
     width: 50,
     height: 50,
     marginTop: 50,
@@ -71,16 +60,18 @@ export const styles = StyleSheet.create({
 
 
   Donebutton: {
-    width: 338,
-    height: 47,
-    backgroundColor: "rgba(85,103,248,1)",
-    marginTop: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
+    width: 50,
+    height: 50,
+    marginTop: 50,
+    backgroundColor: "#ffffff",
   },
   image: {
     width: 250,
     height: 200,
+  },
+  calendar: {
+    backgroundColor: "white", // Set the background color
+    borderWidth: 1, // You can adjust these values as needed
+    borderColor: "#E3AD6A",
   },
 });

@@ -34,10 +34,20 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["NOTIFICATIONS", "RECEIVE_NOTIFICATIONS"]
+      "permissions": [
+        "NOTIFICATIONS",
+        "RECEIVE_NOTIFICATIONS",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.gassamma.StickerSmash"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7cad3caa-b7a7-4897-9e48-7535672de40b"
+      }
     }
   }
 }

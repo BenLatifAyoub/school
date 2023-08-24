@@ -50,7 +50,7 @@ const LoginContainer: React.FC<Props> = ({ navigation }) => {
         password
       );
       const user = userCredential.user;
-      dispatch(updateUser(email, user.displayName, password));
+      dispatch(updateUser(email, user.displayName));
       setEmail("");
       setPassword("");
       console.log(user);

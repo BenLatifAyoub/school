@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Calendar } from "react-native-calendars";
 import { styles } from "../styles/Task";
 import { useSelector } from "react-redux";
-import * as Notifications from 'expo-notifications';
 
 type RootStackParamList = {
   Home: undefined;
@@ -29,31 +28,15 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
   let tas = false;
   const [selectedDate, setSelectedDate] = useState<string>(getCurrentDate());
   const tasks = useSelector((state: any) => state.user.tasks);
- 
-  async function taskNotification(task:any) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'Upcoming Task',
-        body: `You have a task "${task.title}" at ${new Date(task.time).toLocaleString()}`,
-      },
-      trigger: new Date(task.date + " " + task.time),
-    });
-  }
+  console.log("task", tasks);
 
-  async function createNotification() {
-
-    for (const i of tasks) {
-      await taskNotification (i);
-    }
-    alert("Notifications scheduled for tasks!")
-  }
   const generateMarkedDates = () => {
     const markedDates: Record<string, any> = {};
 
     tasks.forEach((task: any) => {
       markedDates[task.date] = { marked: true, dotColor: "#E3AD6A" };
       if (task.date === getCurrentDate()) {
-        tas= true;
+        tas = true;
       }
     });
 
@@ -72,7 +55,9 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
       return 0;
     }
 
-    const count = tasks.filter((task: any) => task.date === selectedDate).length;
+    const count = tasks.filter(
+      (task: any) => task.date === selectedDate
+    ).length;
     return count;
   };
 
@@ -112,15 +97,18 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
       return `${day} ${month}`;
     }
   };
-  useEffect(() => {
-    createNotification();
-  }, []);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.back} onPress={handleGoBack}>
-        <Icon name="arrow-left-circle" style={styles.icon}></Icon>
-      </TouchableOpacity>
+      <View style={styles.row}>
+        <TouchableOpacity style={styles.back} onPress={handleGoBack}>
+          <Icon name="arrow-left-circle" style={styles.icon}></Icon>
+        </TouchableOpacity>
+        <Image
+          source={require("../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+          style={styles.image}
+        ></Image>
+      </View>
       <View style={styles.calendarWrapper}>
         <Calendar
           theme={{
@@ -144,16 +132,15 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
               dotColor: "white",
               customStyles: {
                 container: {
-                  backgroundColor: "#E3AD6A", // Change to the desired color
+                  backgroundColor: "#E3AD6A",
                   borderRadius: 12,
                 },
                 text: {
-                  color: "white", // Change text color as needed
+                  color: "white",
                   fontWeight: "bold",
                 },
               },
             },
-            
           }}
           onDayPress={(day) => setSelectedDate(day.dateString)}
         />
@@ -163,8 +150,8 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
           {formatDate(selectedDate)} - {countTasksForSelectedDate()} Tasks
         </Text>
         {tasks
-          .filter((task : any) => task.date === selectedDate)
-          .map((task : any, index : any) => (
+          .filter((task: any) => task.date === selectedDate)
+          .map((task: any, index: any) => (
             <View key={index} style={styles.taskItem}>
               <TouchableOpacity style={styles.taskButton}>
                 <View style={styles.row}>
@@ -183,7 +170,8 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           ))}
-        {tasks.filter((task : any) => task.date === selectedDate).length === 0 && (
+        {tasks.filter((task: any) => task.date === selectedDate).length ===
+          0 && (
           <View style={styles.taskItem}>
             <Text>No available Task</Text>
           </View>

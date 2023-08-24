@@ -12,36 +12,41 @@ import { app } from "./firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
-import { useLocalNotification } from "./useLocalNotification";
-import { schedulePushNotification } from "./handle-local-notification";
-import * as Notifications from 'expo-notifications';
-import { Platform } from "react-native";
-import Constants from "expo-constants";
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false
-  })
-});
+import * as Notifications from "expo-notifications";
+import { updateUser } from "./Redux/userActions";
 
 const Stack = createStackNavigator();
-export default function App() {
 
-  useLocalNotification();
-const handleLocalPushNotification = async () => {
-  await schedulePushNotification();
-};
+export default function App() {
   const authInstance = getAuth(app);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
+    async function requestNotificationPermissions() {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        alert("Notification permissions not granted!");
+      } else {
+        console.log("Notification permissions granted");
+      }
+    }
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      }),
+    });
+
     const checkAuthState = async () => {
       try {
         const value = await AsyncStorage.getItem("isSignedIn");
         setIsSignedIn(value === "true");
-        console.log("asyncStorage");
+
+        const storedUsername = await AsyncStorage.getItem("username");
+        const storedEmail = await AsyncStorage.getItem("email");
+
+        store.dispatch(updateUser(storedEmail, storedUsername));
       } catch (error) {
         console.error("Error reading authentication state:", error);
       }
@@ -52,14 +57,26 @@ const handleLocalPushNotification = async () => {
       try {
         if (user) {
           await AsyncStorage.setItem("isSignedIn", "true");
+
+          if (user.displayName) {
+            await AsyncStorage.setItem("username", user.displayName);
+          }
+
+          if (user.email) {
+            await AsyncStorage.setItem("email", user.email);
+          }
         } else {
           await AsyncStorage.removeItem("isSignedIn");
+
+          await AsyncStorage.removeItem("username");
+          await AsyncStorage.removeItem("email");
         }
       } catch (error) {
         console.error("Error saving authentication state:", error);
       }
     });
-    handleLocalPushNotification()
+
+    requestNotificationPermissions();
     checkAuthState();
 
     return () => {

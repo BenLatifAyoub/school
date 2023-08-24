@@ -50,7 +50,7 @@ const SignUpContainer: React.FC<Props> = ({ navigation }) => {
       return;
     }
     try {
-      dispatch(updateUser(email, name, password));  
+      dispatch(updateUser(email, name));  
       const userCredential = await createUserWithEmailAndPassword(
         authInstance,
         email,

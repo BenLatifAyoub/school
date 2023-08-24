@@ -1,18 +1,5 @@
 import { StyleSheet } from "react-native";
 
-export const getTextEmailStyles = (selectedEmailInput: string) => {
-  return {
-    color: "#121212",
-    height: 40,
-    width: 340,
-    borderBottomWidth: 1,
-    borderColor:
-      selectedEmailInput === "email" ? "rgba(85,103,248,1)" : "black",
-    textAlign: "left",
-    backgroundColor: "rgba(255,255,255,1)",
-    borderStyle: "solid",
-  };
-};
 
 export const styles = StyleSheet.create({
   container: {
@@ -24,12 +11,18 @@ export const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginTop: 50,
-    marginRight: 330,
+    marginRight: 240,
     backgroundColor: "#ffffff",
   },
   icon: {
     fontSize: 40,
     color: "rgba(128,128,128,1)",
+  },
+  image: {
+    marginTop: 50,
+    width: 90,
+    height: 80,
+    borderRadius: 50,
   },
   title: {
     color: "#000000",
@@ -42,18 +35,17 @@ export const styles = StyleSheet.create({
 
   calendarWrapper: {
     marginTop: 10,
-    width: '100%',
-    height: '47%',
+    width: "100%",
+    height: "47%",
     flexDirection: "column",
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-
   },
   tasksWrapper: {
     padding: 10,
     backgroundColor: "#ffffff",
-    width: '100%'
+    width: "100%",
   },
   taskItem: {
     flexDirection: "column",
@@ -66,9 +58,9 @@ export const styles = StyleSheet.create({
     height: 50,
     marginLeft: 330,
     backgroundColor: "#ffffff",
-    marginBottom: 10
+    marginBottom: 10,
   },
-  addIcon:{
+  addIcon: {
     fontSize: 40,
     color: "rgba(128,128,128,1)",
   },
@@ -77,20 +69,15 @@ export const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "400",
     textAlign: "left",
-  } ,
-  calendar: {
-
   },
+  calendar: {},
   dayText: {
     color: "#333333",
-    // Add more styles as needed
   },
   taskButton: {
     marginTop: 20,
-
   },
   row: {
     flexDirection: "row",
-  }
-
+  },
 });
