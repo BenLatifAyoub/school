@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { app } from "../firebase";
+import { app } from "../../firebase";
 import {
   getAuth,
   Auth,
@@ -20,7 +20,7 @@ import {
   getTextPasswordStyles,
   getTextEmailStyles,
   getTextNameStyles,
-} from "../styles/SignUp";
+} from "./SignUpStyle";
 import Icon from "react-native-vector-icons/Feather";
 
 
@@ -153,7 +153,7 @@ const SignUp: React.FC<Props> = ({
         </TouchableOpacity>
       </View>
       <Image
-        source={require("../assets/happy-woman-study-free-vector.png")}
+        source={require("../../assets/happy-woman-study-free-vector.png")}
         style={styles.image}
       ></Image>
     </KeyboardAvoidingView>

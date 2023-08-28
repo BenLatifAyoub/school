@@ -12,11 +12,12 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { getTextTitleStyles, styles } from "../styles/AddTask";
-import { addTask } from "../Redux/userActions";
-import { Task } from "../Redux/userReducer";
+import { getTextTitleStyles, styles } from "./AddTaskStyle";
+import { addTask } from "../../Redux/userActions";
+import { Task } from "../../Redux/userReducer";
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as Notifications from "expo-notifications";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -107,6 +108,16 @@ const AddTasks: React.FC<Props> = ({ navigation }) => {
 
     dispatch(addTask(newTask));
     console.log(userName);
+
+    try {
+      const tasks = await AsyncStorage.getItem('tasks');
+      const updatedTasks = tasks ? JSON.parse(tasks) : [];
+      updatedTasks.push(newTask);
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      console.log("Tasks saved to AsyncStorage:", updatedTasks);
+    } catch (error) {
+      console.error("Error saving tasks to AsyncStorage:", error);
+    }
     setDesc("");
     setSelectedDate(new Date());
     navigation.navigate("Task");

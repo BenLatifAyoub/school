@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import {
   styles,
-} from "../styles/Welcome";
+} from "./WelcomeStyle";
 
 
 type Props = {
@@ -21,7 +21,7 @@ const Welcome: React.FC<Props> = ({  handleLogin, handleSign }) => {
     <View style={styles.container}>
       <Text style={styles.text} >Welcome to education app</Text> 
       <Image
-        source={require("../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+        source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
         resizeMode="contain"
         style={styles.image}
       ></Image>

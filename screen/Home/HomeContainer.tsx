@@ -3,7 +3,7 @@ import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Home from "./Home";
 import { useSelector } from "react-redux";
-import { app } from "../firebase";
+import { app } from "../../firebase";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 const auth = getAuth(app);
@@ -12,7 +12,8 @@ type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   SignUp: undefined;
-  Task: undefined
+  Task: undefined;
+  Profil: undefined;
 };
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -25,6 +26,7 @@ type HomeProps = {
 const HomeContainer: React.FC<HomeProps> = ({ navigation }) => {
   const userEmail = useSelector((state: any) => state.user.email);
   const userName = useSelector((state: any) => state.user.username);
+  console.log('user', userName)
 
   const handleLogout = async () => {
     try {
@@ -38,8 +40,11 @@ const HomeContainer: React.FC<HomeProps> = ({ navigation }) => {
   const handleTask = () => {
     navigation.navigate("Task")
   }
+  const handleProfile = () => {
+    navigation.navigate("Profil")
+  }
 
-  return <Home userName={userName} handleLogout={handleLogout} handleTask={handleTask} />;
+  return <Home userName={userName} handleLogout={handleLogout} handleTask={handleTask} handleProfile={handleProfile} />;
 };
 
 export default HomeContainer;

@@ -8,19 +8,20 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Feather from "react-native-vector-icons/Feather";
 import { View, TouchableOpacity, Text, Image, ScrollView } from "react-native";
-import { styles } from "../styles/Home";
+import { styles } from "./HomeStyle";
 
 type HomeProps = {
   userName: any;
   handleLogout: any;
   handleTask: any
+  handleProfile: any;
 };
-const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask }) => {
+const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handleProfile }) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <Image
-          source={require("../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+          source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
           style={styles.image}
         ></Image>
         <View style={styles.textContainer}>
@@ -92,7 +93,7 @@ const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button4}
-              onPress={() => handleLogout()}
+              onPress={() => handleProfile()}
             >
                     <Ionicons name="ios-person" style={styles.profileIcon}></Ionicons>
               <Text style={styles.buttonText}>Profil</Text>

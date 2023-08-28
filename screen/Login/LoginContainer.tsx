@@ -3,11 +3,11 @@ import {
   TextInput,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { app } from "../firebase";
+import { app } from "../../firebase";
 import { getAuth, signInWithEmailAndPassword, Auth } from "firebase/auth";
 import LOGIN from "./Login";
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../Redux/userActions';
+import { updateUser } from '../../Redux/userActions';
 
 const authInstance: Auth = getAuth(app);
 

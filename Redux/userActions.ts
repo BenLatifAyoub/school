@@ -24,4 +24,8 @@ export const addTask = (newTask: Task) => ({
   type: "ADD_TASK",
   payload: newTask,
 });
+export const updateTasks = (Tasks: any ) => ({
+  type: "UPDATE_TASKS",
+  payload: Tasks,
+})
 

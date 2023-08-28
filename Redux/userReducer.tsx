@@ -7,6 +7,7 @@ export interface Task {
 export interface UserState {
   username: string;
   email: string;
+
   tasks: Task[];
 }
 
@@ -36,6 +37,8 @@ const userReducer = (state = initialState, action: any) => {
         ...state,
         tasks: [...state.tasks, action.payload],
       };
+      case "UPDATE_TASKS":
+        return { ...state, tasks: action.payload };
     default:
       return state;
   }

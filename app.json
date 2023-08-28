@@ -16,6 +16,12 @@
             "./local/assets/notification-sound.wav"
           ]
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
       ]
     ],
     "splash": {
@@ -35,8 +41,8 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "NOTIFICATIONS",
-        "RECEIVE_NOTIFICATIONS",
+        "android.permission.NOTIFICATIONS",
+        "android.permission.RECEIVE_NOTIFICATIONS",
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.gassamma.StickerSmash"
@@ -46,7 +52,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "7cad3caa-b7a7-4897-9e48-7535672de40b"
+        "projectId": "a5b8d807-dac9-4bb6-83ba-926e37b655fd"
       }
     }
   }

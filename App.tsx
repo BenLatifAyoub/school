@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeContainer from "./screen/HomeContainer";
-import LoginContainer from "./screen/LoginContainer";
-import SignUpContainer from "./screen/SignUpContainer";
-import WelcomeContainer from "./screen/WelcomeContainer";
-import Task from "./screen/task";
-import AddTask from "./screen/AddTask";
+import HomeContainer from "./screen/Home/HomeContainer";
+import LoginContainer from "./screen/Login/LoginContainer";
+import SignUpContainer from "./screen/SignUp/SignUpContainer";
+import WelcomeContainer from "./screen/Welcome/WelcomeContainer";
+import Profil from "./screen/Profile/Profile";
+import ProfilD from "./screen/ProfileDetails/profileD";
+import Task from "./screen/Task/task";
+import AddTask from "./screen/AddTask/AddTask";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "./firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 import * as Notifications from "expo-notifications";
-import { updateUser } from "./Redux/userActions";
+import { updateUser, updateTasks } from "./Redux/userActions";
 
 const Stack = createStackNavigator();
 
@@ -47,6 +49,11 @@ export default function App() {
         const storedEmail = await AsyncStorage.getItem("email");
 
         store.dispatch(updateUser(storedEmail, storedUsername));
+
+        const storedTasks = await AsyncStorage.getItem("tasks");
+        const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
+
+        store.dispatch(updateTasks(parsedTasks));
       } catch (error) {
         console.error("Error reading authentication state:", error);
       }
@@ -103,6 +110,16 @@ export default function App() {
               <Stack.Screen
                 name="AddTask"
                 component={AddTask}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Profil"
+                component={Profil}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ProfilD"
+                component={ProfilD}
                 options={{ headerShown: false }}
               />
             </>

@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Calendar } from "react-native-calendars";
-import { styles } from "../styles/Task";
+import { styles } from "./TaskStyle";
 import { useSelector } from "react-redux";
 
 type RootStackParamList = {
@@ -105,7 +105,7 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
           <Icon name="arrow-left-circle" style={styles.icon}></Icon>
         </TouchableOpacity>
         <Image
-          source={require("../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+          source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
           style={styles.image}
         ></Image>
       </View>
