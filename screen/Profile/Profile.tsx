@@ -28,6 +28,9 @@ type Props = {
 const Profil: React.FC<Props> = ({ navigation }) => {
   const userEmail = useSelector((state: any) => state.user.email);
   const userName = useSelector((state: any) => state.user.username);
+  const photo = useSelector((state: any) => state.user.photoUrl);
+  const userCity = useSelector((state: any) => state.user.city);
+  const userGouv = useSelector((state: any) => state.user.gouv);
   console.log('user', userName)
 
 
@@ -49,20 +52,29 @@ const Profil: React.FC<Props> = ({ navigation }) => {
       </View>
       <View style={styles.menu}>
         <View style={styles.row}>
-          <Image
-            source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
-            style={styles.image}
-          ></Image>
+        {photo ? (
+                <View>
+                  <Image
+                    source={{ uri: photo }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : (
+                <Image
+                  source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+                  style={styles.image}
+                />
+              )}
           <View style={styles.textContainer}>
-            <Text style={styles.yourName2}>{userName} Rejeb</Text>
+            <Text style={styles.yourName2}>{userName}</Text>
             <Text style={styles.work}>student</Text>
             <View style={styles.place}>
               <View style={styles.iconContainer}>
                 <EvilIcons name="location" style={styles.icon1}></EvilIcons>
               </View>
-              <Text style={styles.city}>Moknine</Text>
+              <Text style={styles.city}>{userCity}</Text>
             </View>
-            <Text>Monastir,Tunis</Text>
+            <Text>{userGouv}</Text>
           </View>
         </View>
         <View style={styles.taskItem}>

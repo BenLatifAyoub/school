@@ -15,25 +15,37 @@ type HomeProps = {
   handleLogout: any;
   handleTask: any
   handleProfile: any;
+  userCity: any;
+  userGouv: any;
+  photo: any;
 };
-const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handleProfile }) => {
+const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handleProfile, userGouv, userCity, photo }) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Image
-          source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
-          style={styles.image}
-        ></Image>
+      {photo ? (
+                <View>
+                  <Image
+                    source={{ uri: photo }}
+                    style={styles.image}
+                  />
+                </View>
+              ) : (
+                <Image
+                  source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+                  style={styles.image}
+                />
+              )}
         <View style={styles.textContainer}>
-          <Text style={styles.yourName2}>{userName} Rejeb</Text>
+          <Text style={styles.yourName2}>{userName}</Text>
           <Text style={styles.work}>student</Text>
           <View style={styles.place}>
             <View style={styles.icon}>
               <Icon name="location" style={styles.icon1}></Icon>
             </View>
-            <Text style={styles.city}>Moknine</Text>
+            <Text style={styles.city}>{userCity}</Text>
           </View>
-          <Text style={styles.country}>Monastir,Tunis</Text>
+          <Text style={styles.country}>{userGouv}</Text>
         </View>
       </View>
       <ScrollView style={{ width: "100%", height: "100%" }}>

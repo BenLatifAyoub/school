@@ -15,9 +15,13 @@ export const styles = StyleSheet.create({
   },
   image: {
     marginTop: 60,
-    marginLeft: 40,
+    marginBottom: 10,
+    marginLeft: 25,
+    borderRadius: 40,
+    borderColor: "#E3AD6A" ,
+    borderWidth: 1,
     width: 170,
-    height: 200,
+    height: 170,
   },
   textContainer: {
     flexDirection: 'column',

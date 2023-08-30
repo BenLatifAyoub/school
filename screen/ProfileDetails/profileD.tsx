@@ -6,21 +6,27 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Alert,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { PermissionStatus } from "expo-image-picker";
 import * as ImagePicker from "expo-image-picker";
-import { getAuth, Auth } from "firebase/auth";
+import { getAuth, updateProfile, Auth, updateCurrentUser } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { app, auth } from "../../firebase";
 import Icon from "react-native-vector-icons/Feather";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { styles } from "./profileDStyles";
-import storage from "@react-native-firebase/storage";
+import { decode } from "base-64";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
+import { firebase, uploadImage } from "../../firebase";
+import * as FileSystem from "expo-file-system";
+import { updateUser } from "../../Redux/userActions";
+import { getFirestore } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-const authInstance: Auth = getAuth(app);
 type RootStackParamList = {
   Home: undefined;
   Profil: undefined;
@@ -35,76 +41,138 @@ type Props = {
   navigation: LoginScreenNavigationProp;
 };
 
+const firestore = getFirestore(app);
 const ProfilD: React.FC<Props> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
-  const [city, setCity] = useState("");
-  const [palece, setPlace] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [selectedInput, setSelectedInput] = useState("");
-  const [selectedPasswordInput, setSelectedPasswordInput] = useState("");
-  const [errorText, setErrorText] = useState("");
-  const [isVisible, setisVisible] = useState(true);
-  const [ImageUri, setImageUri] = useState<string | null>(null);
-  const [cameraPermission, setCameraPermission] =
-    useState<PermissionStatus | null>(null);
+  const [city, setCity] = useState("");
+  const [gouv, setGouv] = useState("");
+  const [loadingImage, setLoadingImage] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [photo, setPhoto] = useState<any | null>("");
   const passwordInputRef = useRef<TextInput | null>(null);
-  console.log("user", userName);
+  const user = auth.currentUser;
   useEffect(() => {
     const fetchData = async () => {
-      const user = auth.currentUser;
-
       if (user) {
         const uid = user.uid;
         const userEmail = user.email ?? "";
         const userDisplayName = user.displayName ?? "";
-        const img = user.photoURL;
-        setUserName(userDisplayName);
-        console.log("profil", user);
+        const userPhoto = user.photoURL ?? "";
+        const userRef = firebase.firestore().collection("users").doc(user.uid);
+        userRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              const profileData = doc.data();
+              if (profileData) {
+                setCity(profileData.city);
+                setGouv(profileData.gouvernemet);
+                setEmail(userEmail);
+                setPhoto(userPhoto);
+                setUserName(userDisplayName);
+              }
+              console.log("User profile data:", profileData);
+            } else {
+              console.log("No user profile data found.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user profile data:", error);
+          });
       }
     };
 
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const getCameraPermission = async () => {
-  //     const { status } = await Camera.requestPermissionsAsync();
-  //     setCameraPermission(status);
-  //   };
-
-  //   getCameraPermission();
-  // }, []);
   const handleGoBack = () => {
     navigation.goBack();
   };
 
   const handleImagePicker = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-      console.log('Permission to access media library was denied');
-      return;
-    }
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    const result = await ImagePicker.launchImageLibraryAsync();
-    console.log(result)
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-      console.log('aaaaefefefe', result.assets[0].uri)
-      await uploadImage(result.assets[0].uri);
+      if (!result.canceled) {
+        const url = await uploadImage(
+          result.assets[0].uri,
+          "profil" + userName,
+          "image"
+        );
+        console.log("urll", url);
+
+        if (url) {
+          const user = auth.currentUser;
+          if (user) {
+            await updateProfile(user, {
+              photoURL: url,
+            });
+            setPhoto(url);
+            dispatch(
+              updateUser(email, user.displayName, user.photoURL, city, gouv)
+            );
+            console.log("User profile updated with photoURL:", user);
+          }
+        } else {
+          console.log("Image upload failed.");
+        }
+      }
+    } catch (error) {
+      console.error("Error during image upload and profile update:", error);
     }
   };
 
-  const uploadImage = async (uri: string) => {
-    console.log('aaaaaa')
-    const filename = uri.substring(uri.lastIndexOf('/') + 1);
-    console.log('file', filename);
-    const storageRef = storage().ref(`images/${filename}`);
-    const response = await fetch(uri);
-    console.log('rep', response)
-    const blob = await response.blob();
-    await storageRef.put(blob);
+  const handleSubmit = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      await updateProfile(user, {
+        displayName: userName,
+      });
+
+      user
+        .updateEmail(email)
+        .then(() => {
+          console.log("Email address updated successfully.");
+        })
+        .catch((error) => {
+          console.error("Error updating email:", error);
+        });
+
+      console.log("usernameee", user.displayName);
+
+      const userRef = firebase.firestore().collection("users").doc(user.uid);
+
+      const profileData = {
+        city: city,
+        gouvernemet: gouv,
+      };
+
+      userRef
+        .set(profileData, { merge: true })
+        .then(async () => {
+          dispatch(
+            updateUser(email, user.displayName, user.photoURL, city, gouv)
+          );
+          if (user.displayName && user.photoURL) {
+            await AsyncStorage.setItem("username", user.displayName);
+            await AsyncStorage.setItem("email", email);
+            await AsyncStorage.setItem("photo", user.photoURL);
+            await AsyncStorage.setItem("city", profileData.city);
+            await AsyncStorage.setItem("gouv", profileData.gouvernemet);
+          }
+          console.log("User profile data stored successfully.");
+        })
+        .catch((error) => {
+          console.error("Error storing user profile data:", error);
+        });
+    }
   };
 
   return (
@@ -119,10 +187,21 @@ const ProfilD: React.FC<Props> = ({ navigation }) => {
         <View style={styles.menu}>
           <View style={styles.row}>
             <View style={styles.imageContainer}>
-              <Image
-                source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
-                style={styles.image}
-              />
+              {photo ? (
+                <View>
+                  <Image
+                    source={{ uri: photo }}
+                    style={styles.image}
+                    onLoadEnd={() => setLoadingImage(false)}
+                  />
+                </View>
+              ) : (
+                <Image
+                  source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+                  style={styles.image}
+                />
+              )}
+
               <TouchableOpacity style={styles.edit} onPress={handleImagePicker}>
                 <Entypo
                   name="edit"
@@ -152,13 +231,18 @@ const ProfilD: React.FC<Props> = ({ navigation }) => {
                 selectionColor="#E3AD6A"
                 defaultValue={userName}
                 style={styles.nameInput}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={(text) => setUserName(text)}
                 onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
             </View>
           </View>
           <View style={styles.rowInput}>
-            <Feather name="user" size={24} color="#E3AD6A" marginLeft={10} />
+            <MaterialCommunityIcons
+              name="email-edit-outline"
+              size={24}
+              color="#E3AD6A"
+              marginLeft={10}
+            />
             <View
               style={{
                 backgroundColor: "#999999",
@@ -182,7 +266,12 @@ const ProfilD: React.FC<Props> = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.rowInput}>
-            <Feather name="user" size={24} color="#E3AD6A" marginLeft={10} />
+            <MaterialCommunityIcons
+              name="home-city-outline"
+              size={24}
+              color="#E3AD6A"
+              marginLeft={10}
+            />
             <View
               style={{
                 backgroundColor: "#999999",
@@ -198,15 +287,20 @@ const ProfilD: React.FC<Props> = ({ navigation }) => {
                 textBreakStrategy="simple"
                 clearButtonMode="never"
                 selectionColor="#E3AD6A"
-                defaultValue={userName}
+                defaultValue={city}
                 style={styles.nameInput}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={(text) => setCity(text)}
                 onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
             </View>
           </View>
           <View style={styles.rowInput}>
-            <Feather name="user" size={24} color="#E3AD6A" marginLeft={10} />
+            <EvilIcons
+              name="location"
+              size={24}
+              color="#E3AD6A"
+              marginLeft={10}
+            />
             <View
               style={{
                 backgroundColor: "#999999",
@@ -224,13 +318,19 @@ const ProfilD: React.FC<Props> = ({ navigation }) => {
                 textBreakStrategy="simple"
                 clearButtonMode="never"
                 selectionColor="#E3AD6A"
-                defaultValue={userName}
+                defaultValue={gouv}
                 style={styles.nameInput}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={(text) => setGouv(text)}
                 onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
             </View>
           </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleSubmit()}
+          >
+            <Text style={styles.submit}>SUBMIT</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -245,4 +345,3 @@ function launchImageLibrary(arg0: {}, arg1: (response: any) => Promise<void>) {
 function setImageUri(uri: any) {
   throw new Error("Function not implemented.");
 }
-

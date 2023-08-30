@@ -7,14 +7,19 @@ export interface Task {
 export interface UserState {
   username: string;
   email: string;
-
+  photoUrl: string;
   tasks: Task[];
+  city: string;
+  gouv: string;
 }
 
 const initialState: UserState = {
   username: "",
   email: "",
+  photoUrl: "",
   tasks: [],
+  city:'',
+  gouv:"",
 };
 
 const userReducer = (state = initialState, action: any) => {
@@ -24,13 +29,15 @@ const userReducer = (state = initialState, action: any) => {
     case "UPDATE_EMAIL":
       return { ...state, email: action.payload };
     case "UPDATE_PASSWORD":
-      return { ...state, password: action.payload };
+      return { ...state, photoUrl: action.payload };
     case "UPDATE_USER":
       return {
         ...state,
         email: action.payload.email,
         username: action.payload.username,
-        password: action.payload.password,
+        photoUrl: action.payload.photoUrl,
+        city: action.payload.city,
+        gouv: action.payload.gouv,
       };
     case "ADD_TASK":
       return {

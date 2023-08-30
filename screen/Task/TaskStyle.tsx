@@ -3,20 +3,28 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#E3AD6A",
   },
   back: {
     width: 50,
     height: 50,
-    marginTop: 50,
-    marginRight: 240,
-    backgroundColor: "#ffffff",
+    marginTop: 53,
   },
   icon: {
     fontSize: 40,
-    color: "rgba(128,128,128,1)",
+    color: "#ffffff",
+  },
+
+  title: {
+    color: "#ffffff",
+    fontSize: 30,
+    fontWeight: "400",
+    textAlign: "center",
+    width: "60%",
+    marginRight: 50,
+    marginTop: 50,
   },
   image: {
     marginTop: 50,
@@ -24,13 +32,14 @@ export const styles = StyleSheet.create({
     height: 80,
     borderRadius: 50,
   },
-  title: {
-    color: "#000000",
-    fontSize: 50,
-    fontWeight: "400",
-    textAlign: "center",
-    marginRight: 235,
-    width: "85%",
+  menu: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#ffffff",
+    marginTop: 25,
+    borderRadius: 30,
+    alignContent: 'center',
+    alignItems: 'center',
   },
 
   calendarWrapper: {
@@ -56,13 +65,12 @@ export const styles = StyleSheet.create({
   addButton: {
     width: 50,
     height: 50,
-    marginLeft: 330,
-    backgroundColor: "#ffffff",
-    marginBottom: 10,
+    marginLeft: 350,
+    marginBottom: 150,
   },
   addIcon: {
     fontSize: 40,
-    color: "rgba(128,128,128,1)",
+    color: "#E3AD6A",
   },
   taskTitle: {
     color: "#000000",
@@ -76,8 +84,10 @@ export const styles = StyleSheet.create({
   },
   taskButton: {
     marginTop: 20,
+    marginRight: 250,
   },
   row: {
     flexDirection: "row",
+    justifyContent: "center",
   },
 });

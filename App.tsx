@@ -9,13 +9,14 @@ import Profil from "./screen/Profile/Profile";
 import ProfilD from "./screen/ProfileDetails/profileD";
 import Task from "./screen/Task/task";
 import AddTask from "./screen/AddTask/AddTask";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, initializeAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "./firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 import * as Notifications from "expo-notifications";
 import { updateUser, updateTasks } from "./Redux/userActions";
+import firebase from "firebase/compat";
 
 const Stack = createStackNavigator();
 
@@ -47,8 +48,27 @@ export default function App() {
 
         const storedUsername = await AsyncStorage.getItem("username");
         const storedEmail = await AsyncStorage.getItem("email");
+        const storedPassword = await AsyncStorage.getItem("password");
+        const storedPhoto = await AsyncStorage.getItem('photo');
+        const storedCity = await AsyncStorage.getItem('city');
+        const storedGouv = await AsyncStorage.getItem('gouv');
+        console.log("password",storedPassword)
+        try {
+          if (storedEmail && storedPassword) {
+            const userCredential = await signInWithEmailAndPassword(
+              authInstance,
+              storedEmail,
+              storedPassword
+            );
+            console.log(userCredential)
+            await AsyncStorage.setItem("password",storedPassword)
+          }
+        } catch (error) {
+          
+        }
 
-        store.dispatch(updateUser(storedEmail, storedUsername));
+   
+        store.dispatch(updateUser(storedEmail, storedUsername, storedPhoto, storedCity, storedGouv));
 
         const storedTasks = await AsyncStorage.getItem("tasks");
         const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
@@ -64,7 +84,20 @@ export default function App() {
       try {
         if (user) {
           await AsyncStorage.setItem("isSignedIn", "true");
-
+          const userRef = firebase.firestore().collection('users').doc(user.uid);
+          userRef.get()
+          .then(async (doc) => {
+            if (doc.exists) {
+              const profileData = doc.data();
+              if(profileData){
+                await AsyncStorage.setItem("city", profileData.city);
+                await AsyncStorage.setItem("gouv", profileData.gouvernemet);
+              }
+              console.log('User profile data:', profileData);
+            } else {
+              console.log('No user profile data found.');
+            }
+          })
           if (user.displayName) {
             await AsyncStorage.setItem("username", user.displayName);
           }
@@ -72,11 +105,16 @@ export default function App() {
           if (user.email) {
             await AsyncStorage.setItem("email", user.email);
           }
+          if (user.photoURL) {
+            await AsyncStorage.setItem("photo", user.photoURL)
+          }
         } else {
           await AsyncStorage.removeItem("isSignedIn");
-
+          await AsyncStorage.removeItem("tasks");
           await AsyncStorage.removeItem("username");
           await AsyncStorage.removeItem("email");
+          await AsyncStorage.removeItem("photo");
+          await AsyncStorage.removeItem("password");
         }
       } catch (error) {
         console.error("Error saving authentication state:", error);

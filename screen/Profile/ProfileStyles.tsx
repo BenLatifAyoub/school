@@ -39,7 +39,9 @@ export const styles = StyleSheet.create({
   },
   image: {
     marginTop: 20,
-
+    borderRadius: 50,
+    borderColor: "#E3AD6A" ,
+    borderWidth: 1,
     width: 200,
     height: 200,
   },

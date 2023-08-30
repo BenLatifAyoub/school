@@ -1,6 +1,9 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
+import firebase from "firebase/compat/app";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import "firebase/compat/auth";
+import "firebase/compat/storage";
+import 'firebase/compat/firestore';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyAWmp13mBFfGiHsFFfhQrDXbVPlNegC49Q",
@@ -12,8 +15,43 @@ const firebaseConfig = {
   measurementId: "G-LF9MZSCX46",
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const storage = getStorage();
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const storage = firebase.storage();
+const firestore = firebase.firestore;
 
-export { app, auth, storage };
+export const uriToBlob = (uri: string) => {
+  return new Promise<Blob>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      // return the blob
+      resolve(xhr.response);
+    };
+    xhr.onerror = function () {
+      reject(new Error("uriToBlob failed"));
+    };
+    xhr.responseType = "blob";
+    xhr.open("GET", uri, true);
+
+    xhr.send(null);
+  });
+};
+const uploadImage = async (uri: any, name: string, folder: string) => {
+  if (!name) return null; // Return early if no name provided
+
+  try {
+    const storageRef = ref(storage, `${folder}/${name}`);
+    const blobFile = await uriToBlob(uri);
+    
+    await uploadBytes(storageRef, blobFile);
+    const url = await getDownloadURL(storageRef);
+
+    console.log("urlfireeee", url)
+    return url; // Return the URL after successful upload
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+export { app, auth, storage,firestore, firebase, uploadImage };

@@ -11,6 +11,7 @@ import {
 import SignUp from "./SignUp";
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../Redux/userActions';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const authInstance: Auth = getAuth(app);
 
@@ -61,6 +62,9 @@ const SignUpContainer: React.FC<Props> = ({ navigation }) => {
       await updateProfile(user, {
         displayName: name,
       });
+      if(password){
+        await AsyncStorage.setItem("password", password)
+      }
       setName("");
       setEmail("");
       setPassword("");

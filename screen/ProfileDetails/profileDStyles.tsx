@@ -34,6 +34,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     marginTop: 25,
     borderRadius: 30,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   row: {
     flexDirection: "row",
@@ -44,6 +46,9 @@ export const styles = StyleSheet.create({
   },
   image: {
     marginTop: 20,
+    borderRadius: 50,
+    borderColor: "#E3AD6A" ,
+    borderWidth: 1,
     resizeMode: "cover",
     width: 200,
     height: 200,
@@ -52,11 +57,12 @@ export const styles = StyleSheet.create({
     width: "17%",
     height: "17%",
     borderRadius: 50,
+
     backgroundColor: "#E3AD6A",
     alignItems: "center",
     justifyContent: "center",
     top: 175,
-    right: 20,
+    right: 10,
     position: "absolute",
   },
   editIcon: {
@@ -97,6 +103,7 @@ export const styles = StyleSheet.create({
   },
   rowInput: {
     height: "7%",
+    width: "80%",
     backgroundColor: "#e9edee",
     borderColor: "#bcbcbc",
     borderWidth: 1,
@@ -107,22 +114,27 @@ export const styles = StyleSheet.create({
     marginRight: 20,
     alignItems: "center",
   },
-  password: {
-    color: "#ffffff",
-    fontSize: 30,
-    fontWeight: "400",
-    textAlign: "center",
-    width: "60%",
-    marginRight: 50,
-    marginTop: 50,
-  },
   nameInput: {
     color: "#121212",
     height: "50%",
-    width: 347,
+    width: "100%",
+    maxWidth: "95%",
     marginLeft: 10,
     textAlign: "left",
     borderStyle: "solid",
+  },
+  button: {
+    width: 338,
+    height: 47,
+    backgroundColor: "#E3AD6A",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    borderRadius: 10,
+  },
+  submit: {
+    color: "rgba(255,255,255,1)",
+    fontSize: 18,
   },
 });
 export const getTextPasswordStyles = (

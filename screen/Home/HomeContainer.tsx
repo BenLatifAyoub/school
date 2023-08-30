@@ -26,6 +26,10 @@ type HomeProps = {
 const HomeContainer: React.FC<HomeProps> = ({ navigation }) => {
   const userEmail = useSelector((state: any) => state.user.email);
   const userName = useSelector((state: any) => state.user.username);
+  const photo = useSelector((state: any) => state.user.photoUrl);
+  const userCity = useSelector((state: any) => state.user.city);
+  const userGouv = useSelector((state: any) => state.user.gouv);
+  console.log('userGouubb', userGouv)
   console.log('user', userName)
 
   const handleLogout = async () => {
@@ -44,7 +48,7 @@ const HomeContainer: React.FC<HomeProps> = ({ navigation }) => {
     navigation.navigate("Profil")
   }
 
-  return <Home userName={userName} handleLogout={handleLogout} handleTask={handleTask} handleProfile={handleProfile} />;
+  return <Home userName={userName} handleLogout={handleLogout} handleTask={handleTask} handleProfile={handleProfile} userGouv={userGouv} userCity={userCity} photo={photo}/>;
 };
 
 export default HomeContainer;
