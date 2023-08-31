@@ -54,7 +54,6 @@ const LoginContainer: React.FC<Props> = ({ navigation }) => {
       }
       setEmail("");
       setPassword("");
-      console.log(user);
     } catch (error) {
       console.log("error");
       setErrorText("Wrong Email or Password.");

@@ -91,7 +91,6 @@ const EditTaskContainer: React.FC<Props> = ({ navigation }) => {
       console.error("Error scheduling modified notification:", error);
     }
     dispatch(editTask(newTask));
-    console.log(userName);
 
     try {
       const tasks = await AsyncStorage.getItem("tasks");

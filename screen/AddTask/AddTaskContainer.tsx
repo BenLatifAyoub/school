@@ -62,7 +62,6 @@ const AddTasksContainer: React.FC<Props> = ({ navigation }) => {
   };
   const handleGoBack = () => {
     navigation.goBack();
-    console.log(userName);
   };
 
   const handleDone = async () => {
@@ -97,7 +96,6 @@ const AddTasksContainer: React.FC<Props> = ({ navigation }) => {
     }
 
     dispatch(addTask(newTask));
-    console.log(userName);
 
     try {
       const tasks = await AsyncStorage.getItem("tasks");

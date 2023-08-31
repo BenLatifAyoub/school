@@ -44,7 +44,6 @@ const uploadImage = async (uri: any, name: string, folder: string) => {
     await uploadBytes(storageRef, blobFile);
     const url = await getDownloadURL(storageRef);
 
-    console.log("urlfireeee", url);
     return url;
   } catch (err) {
     console.log(err);

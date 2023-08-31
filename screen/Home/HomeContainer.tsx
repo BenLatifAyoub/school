@@ -31,8 +31,6 @@ const HomeContainer: React.FC<HomeProps> = ({ navigation }) => {
   const userCity = useSelector((state: any) => state.user.city);
   const userGouv = useSelector((state: any) => state.user.gouv);
 
-  console.log("userGouubb", userGouv);
-  console.log("user", userName);
   const handleLogout = async () => {
     try {
       await signOut(auth);

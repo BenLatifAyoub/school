@@ -35,7 +35,6 @@ const ProfilDContainer: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
-        console.log("ussssseerrrr", user);
         const userEmail = user.email ?? "";
         const userDisplayName = user.displayName ?? "";
         const userPhoto = user.photoURL ?? "";
@@ -85,7 +84,6 @@ const ProfilDContainer: React.FC<Props> = ({ navigation }) => {
           "profil" + userName,
           "image"
         );
-        console.log("urll", url);
 
         if (url) {
           const user = auth.currentUser;
@@ -124,7 +122,6 @@ const ProfilDContainer: React.FC<Props> = ({ navigation }) => {
           console.error("Error updating email:", error);
         });
 
-      console.log("usernameee", user.displayName);
 
       const userRef = firebase.firestore().collection("users").doc(user.uid);
 

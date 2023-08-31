@@ -58,14 +58,11 @@ export default function App() {
         const storedTasks = await AsyncStorage.getItem("tasks");
         if (storedIsSignedIN === "true") {
           const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
-          console.log("taskkkkkkkkkkk", storedTasks);
           store.dispatch(updateTasks(parsedTasks));
         }
         const storedEmail = await AsyncStorage.getItem("email");
         const storedPassword = await AsyncStorage.getItem("password");
 
-        console.log("email", storedEmail);
-        console.log("password", storedPassword);
         try {
           if (storedEmail && storedPassword) {
             const userCredential = await signInWithEmailAndPassword(
@@ -88,7 +85,6 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(authInstance, async (user) => {
       try {
         if (user) {
-          console.log("userApp", user);
           let city = "";
           let gouvernemet = "";
           const userRef = firebase
@@ -124,7 +120,6 @@ export default function App() {
                     gouvernemet
                   )
                 );
-                console.log("we are here");
               }
               setIsSignedIn(!!user);
               await AsyncStorage.setItem("isSignedIn", "true");

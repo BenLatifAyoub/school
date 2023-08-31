@@ -44,9 +44,6 @@ const SignUpContainer: React.FC<Props> = ({ navigation }) => {
   const emailInputRef = useRef<TextInput | null>(null);
 
   const handleNext = async () => {
-    console.log("username: ", email);
-    console.log("password: ", password);
-    console.log("name :", name);
     if (!email || !password || !name) {
       setErrorText("Please provide name, email and password.");
       return;
@@ -59,7 +56,6 @@ const SignUpContainer: React.FC<Props> = ({ navigation }) => {
         password
       );
       const user = userCredential.user;
-      console.log(userCredential);
       await updateProfile(user, {
         displayName: name,
       });
