@@ -11,33 +11,33 @@ export const styles = StyleSheet.create({
     width: "100%",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   image: {
     marginTop: 60,
     marginBottom: 10,
     marginLeft: 25,
     borderRadius: 40,
-    borderColor: "#E3AD6A" ,
+    borderColor: "#E3AD6A",
     borderWidth: 1,
     width: 170,
     height: 170,
   },
   textContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
+    flexDirection: "column",
+    alignItems: "flex-end",
   },
   yourName2: {
     marginLeft: 20,
-    textAlign: 'right',
+    textAlign: "right",
     marginTop: 30,
     fontSize: 20,
   },
   work: {
-    textAlign: 'right',
+    textAlign: "right",
   },
   place: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   icon: {
     marginTop: 20,
@@ -49,14 +49,11 @@ export const styles = StyleSheet.create({
   city: {
     marginTop: 20,
     marginLeft: 10,
-    textAlign: 'right',
+    textAlign: "right",
     fontSize: 20,
   },
-  country: {
-
-  },
+  country: {},
   yourEmail: {
-
     color: "#121212",
     textDecorationLine: "underline",
     fontSize: 20,
@@ -65,7 +62,6 @@ export const styles = StyleSheet.create({
   button: {
     width: 54,
     height: 52,
-
   },
   iconStack: {
     top: 707,
@@ -139,61 +135,59 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     margin: 15,
-    marginTop: 30
-
-  
+    marginTop: 30,
   },
-  book:{
+  book: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(255,169,9,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  lessonIcon:{
+  lessonIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(85,103,248,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  shedduleIcon:{
+  shedduleIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(94,255,6,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  resultsIcon:{
+  resultsIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(128,4,255,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  newsIcon:{
+  newsIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(255,0,0,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  profileIcon:{
+  profileIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(3,250,212,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  contactIcon:{
+  contactIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(248,247,1,1)",
-    fontSize: 30
+    fontSize: 30,
   },
-  LogOutIcon:{
+  LogOutIcon: {
     marginTop: 10,
     marginLeft: 10,
     color: "rgba(189,16,224,1)",
-    fontSize: 30
+    fontSize: 30,
   },
   buttonText: {
-    marginTop:20,
-    marginLeft:10,
+    marginTop: 20,
+    marginLeft: 10,
     color: "#000000",
     fontSize: 20,
   },

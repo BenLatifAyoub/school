@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 
-
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -38,8 +37,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     marginTop: 25,
     borderRadius: 30,
-    alignContent: 'center',
-    alignItems: 'center',
+    alignContent: "center",
+    alignItems: "center",
   },
 
   calendarWrapper: {
@@ -84,7 +83,7 @@ export const styles = StyleSheet.create({
   },
   taskButton: {
     marginTop: 20,
-    marginRight: 250,
+    marginRight: 240,
   },
   row: {
     flexDirection: "row",

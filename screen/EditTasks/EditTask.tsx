@@ -12,19 +12,19 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { getTextTitleStyles, styles } from "./AddTaskStyle";
-import { addTask } from "../../Redux/userActions";
+import { getTextTitleStyles, styles } from "./EditTaskStyle";
+import { addTask, editTask } from "../../Redux/userActions";
 import { Task } from "../../Redux/userReducer";
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { v4 as uuidv4 } from "uuid";
+import { useRoute } from "@react-navigation/native";
 
 type RootStackParamList = {
   Login: undefined;
   Home: undefined;
-  SignUp: undefined;
   Task: undefined;
+  EditTask: undefined;
   Welcome: undefined;
 };
 type LoginScreenNavigationProp = StackNavigationProp<
@@ -33,35 +33,43 @@ type LoginScreenNavigationProp = StackNavigationProp<
 >;
 
 type Props = {
-  handleDone: any;
+  formatDate: any;
   handleGoBack: any;
   handleConfirm: any;
-  formatDate: any;
-  showDatePicker: any;
   hideDatePicker: any;
+  handleModifyTask: any;
+  showDatePicker: any;
   userName: any;
   isDatePickerVisible: any;
   setDatePickerVisible: any;
+  confirm: any;
+  setConfirm: any;
   selectedDate: any;
   setSelectedDate: any;
   desc: any;
   setDesc: any;
-  selectedTitleInput: string;
+  selectedTitleInput: any;
   setSelectedTitleInput: any;
   descInputRef: any;
   dispatch: any;
+  route: any;
+  disc: any;
+  dates: any;
+  time: any;
 };
 
-const AddTasks: React.FC<Props> = ({
-  handleDone,
+const EditTask: React.FC<Props> = ({
+  formatDate,
   handleGoBack,
   handleConfirm,
-  formatDate,
-  showDatePicker,
   hideDatePicker,
+  handleModifyTask,
+  showDatePicker,
   userName,
   isDatePickerVisible,
   setDatePickerVisible,
+  confirm,
+  setConfirm,
   selectedDate,
   setSelectedDate,
   desc,
@@ -70,6 +78,10 @@ const AddTasks: React.FC<Props> = ({
   setSelectedTitleInput,
   descInputRef,
   dispatch,
+  route,
+  disc,
+  dates,
+  time
 }) => {
   return (
     <KeyboardAvoidingView
@@ -77,13 +89,10 @@ const AddTasks: React.FC<Props> = ({
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={styles.row}>
-        <TouchableOpacity style={styles.back} onPress={() => handleGoBack()}>
+        <TouchableOpacity style={styles.back} onPress={handleGoBack}>
           <Icon name="close-o" style={styles.icon1}></Icon>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.Donebutton}
-          onPress={() => handleDone()}
-        >
+        <TouchableOpacity style={styles.Donebutton} onPress={handleModifyTask}>
           <Icon name="check" style={styles.icon1}></Icon>
         </TouchableOpacity>
       </View>
@@ -93,7 +102,7 @@ const AddTasks: React.FC<Props> = ({
           clearButtonMode="never"
           selectionColor="#E3AD6A"
           placeholder="Title"
-          defaultValue={desc}
+          defaultValue={disc}
           ref={descInputRef}
           style={getTextTitleStyles(selectedTitleInput) as TextStyle}
           onChangeText={(text) => setDesc(text)}
@@ -104,7 +113,13 @@ const AddTasks: React.FC<Props> = ({
           <TouchableOpacity style={styles.button} onPress={showDatePicker}>
             <FontAwesome name="calendar" style={styles.icon}></FontAwesome>
           </TouchableOpacity>
-          <Text style={styles.time}>{formatDate(selectedDate)}</Text>
+          {confirm ? (
+            <Text style={styles.time}>{formatDate(selectedDate)}</Text>
+          ) : (
+            <Text style={styles.time}>
+              {dates},{time}
+            </Text>
+          )}
         </View>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
@@ -117,4 +132,4 @@ const AddTasks: React.FC<Props> = ({
   );
 };
 
-export default AddTasks;
+export default EditTask;

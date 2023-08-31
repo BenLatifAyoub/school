@@ -1,25 +1,16 @@
 import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-} from "react-native";
-import {
-  styles,
-} from "./WelcomeStyle";
-
+import { View, TouchableOpacity, Text, Image } from "react-native";
+import { styles } from "./WelcomeStyle";
 
 type Props = {
-  handleLogin: any
-  handleSign: any
+  handleLogin: any;
+  handleSign: any;
 };
 
-const Welcome: React.FC<Props> = ({  handleLogin, handleSign }) => {
-
+const Welcome: React.FC<Props> = ({ handleLogin, handleSign }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text} >Welcome to education app</Text> 
+      <Text style={styles.text}>Welcome to education app</Text>
       <Image
         source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
         resizeMode="contain"
@@ -29,12 +20,12 @@ const Welcome: React.FC<Props> = ({  handleLogin, handleSign }) => {
         <Text style={styles.login}>Log in</Text>
       </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.registerButton}
-          onPress={() => handleSign()}
-        >
-          <Text style={styles.regestirNow}>Sign up</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.registerButton}
+        onPress={() => handleSign()}
+      >
+        <Text style={styles.regestirNow}>Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 };

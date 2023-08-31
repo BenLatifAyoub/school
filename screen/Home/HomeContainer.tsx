@@ -14,10 +14,11 @@ type RootStackParamList = {
   SignUp: undefined;
   Task: undefined;
   Profil: undefined;
+  Welcome: undefined;
 };
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Login"
+  "Welcome"
 >;
 
 type HomeProps = {
@@ -29,26 +30,41 @@ const HomeContainer: React.FC<HomeProps> = ({ navigation }) => {
   const photo = useSelector((state: any) => state.user.photoUrl);
   const userCity = useSelector((state: any) => state.user.city);
   const userGouv = useSelector((state: any) => state.user.gouv);
-  console.log('userGouubb', userGouv)
-  console.log('user', userName)
 
+  console.log("userGouubb", userGouv);
+  console.log("user", userName);
   const handleLogout = async () => {
     try {
       await signOut(auth);
       await AsyncStorage.removeItem("isSignedIn");
+      await AsyncStorage.removeItem("tasks");
+      await AsyncStorage.removeItem("username");
+      await AsyncStorage.removeItem("email");
+      await AsyncStorage.removeItem("photo");
+      await AsyncStorage.removeItem("password");
     } catch (error: any) {
       console.error("Error logging out:", error.message);
     }
   };
 
   const handleTask = () => {
-    navigation.navigate("Task")
-  }
+    navigation.navigate("Task");
+  };
   const handleProfile = () => {
-    navigation.navigate("Profil")
-  }
+    navigation.navigate("Profil");
+  };
 
-  return <Home userName={userName} handleLogout={handleLogout} handleTask={handleTask} handleProfile={handleProfile} userGouv={userGouv} userCity={userCity} photo={photo}/>;
+  return (
+    <Home
+      userName={userName}
+      handleLogout={handleLogout}
+      handleTask={handleTask}
+      handleProfile={handleProfile}
+      userGouv={userGouv}
+      userCity={userCity}
+      photo={photo}
+    />
+  );
 };
 
 export default HomeContainer;

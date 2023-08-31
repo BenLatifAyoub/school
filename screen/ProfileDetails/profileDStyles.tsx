@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#E3AD6A",
   },
   scrollViewContent: {
-    flexGrow: 1, // Allow ScrollView to take all available space
+    flexGrow: 1,
   },
   back: {
     width: 50,
@@ -34,8 +34,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     marginTop: 25,
     borderRadius: 30,
-    alignContent: 'center',
-    alignItems: 'center',
+    alignContent: "center",
+    alignItems: "center",
   },
   row: {
     flexDirection: "row",
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   image: {
     marginTop: 20,
     borderRadius: 50,
-    borderColor: "#E3AD6A" ,
+    borderColor: "#E3AD6A",
     borderWidth: 1,
     resizeMode: "cover",
     width: 200,
@@ -117,11 +117,10 @@ export const styles = StyleSheet.create({
   nameInput: {
     color: "#121212",
     height: "50%",
-    width: "100%",
+    width: 250,
     maxWidth: "95%",
     marginLeft: 10,
     textAlign: "left",
-    borderStyle: "solid",
   },
   button: {
     width: 338,
@@ -160,7 +159,7 @@ export const getTextInputStyles = (selectedInput: string) => {
     width: 347,
     borderBottomWidth: 1,
     borderColor: selectedInput === "email" ? "rgba(85,103,248,1)" : "black",
-    textAlign: "left",
+
     backgroundColor: "rgba(255,255,255,1)",
     borderStyle: "solid",
   };

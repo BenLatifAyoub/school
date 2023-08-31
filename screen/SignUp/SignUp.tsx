@@ -10,11 +10,6 @@ import {
   Platform,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { app } from "../../firebase";
-import {
-  getAuth,
-  Auth,
-} from "firebase/auth";
 import {
   styles,
   getTextPasswordStyles,
@@ -22,9 +17,6 @@ import {
   getTextNameStyles,
 } from "./SignUpStyle";
 import Icon from "react-native-vector-icons/Feather";
-
-
-const authInstance: Auth = getAuth(app);
 
 type RootStackParamList = {
   Login: undefined;
@@ -37,29 +29,29 @@ type LoginScreenNavigationProp = StackNavigationProp<
 >;
 
 type Props = {
-  email: string,
-  setEmail: any
-  password: string
-  setPassword: any
-  name: string
-  setName: any
-  selectedNameInput: any
-  setSelectedNameInput: any
-  selectedEmailInput: any
-  setSelectedEmailInput: any
-  selectedPasswordInput: any
-  setSelectedPasswordInput: any
-  errorText: any
-  isVisible: any
-  setisVisible: any
-  passwordInputRef: any
-  emailInputRef: any
-  handleNext: any
-  handleLogin: any
-  handleGoBack: any
+  email: string;
+  setEmail: any;
+  password: string;
+  setPassword: any;
+  name: string;
+  setName: any;
+  selectedNameInput: any;
+  setSelectedNameInput: any;
+  selectedEmailInput: any;
+  setSelectedEmailInput: any;
+  selectedPasswordInput: any;
+  setSelectedPasswordInput: any;
+  errorText: any;
+  isVisible: any;
+  setisVisible: any;
+  passwordInputRef: any;
+  emailInputRef: any;
+  handleNext: any;
+  handleLogin: any;
+  handleGoBack: any;
 };
 
-const SignUp: React.FC<Props> = ({  
+const SignUp: React.FC<Props> = ({
   email,
   setEmail,
   password,
@@ -79,8 +71,8 @@ const SignUp: React.FC<Props> = ({
   emailInputRef,
   handleNext,
   handleLogin,
-  handleGoBack, }) => {
-
+  handleGoBack,
+}) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}

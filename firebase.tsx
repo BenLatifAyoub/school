@@ -2,8 +2,7 @@ import firebase from "firebase/compat/app";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import "firebase/compat/auth";
 import "firebase/compat/storage";
-import 'firebase/compat/firestore';
-
+import "firebase/compat/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAWmp13mBFfGiHsFFfhQrDXbVPlNegC49Q",
@@ -42,11 +41,11 @@ const uploadImage = async (uri: any, name: string, folder: string) => {
   try {
     const storageRef = ref(storage, `${folder}/${name}`);
     const blobFile = await uriToBlob(uri);
-    
+
     await uploadBytes(storageRef, blobFile);
     const url = await getDownloadURL(storageRef);
 
-    console.log("urlfireeee", url)
+    console.log("urlfireeee", url);
     return url; // Return the URL after successful upload
   } catch (err) {
     console.log(err);
@@ -54,4 +53,4 @@ const uploadImage = async (uri: any, name: string, folder: string) => {
   }
 };
 
-export { app, auth, storage,firestore, firebase, uploadImage };
+export { app, auth, storage, firestore, firebase, uploadImage };

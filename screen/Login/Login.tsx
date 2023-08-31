@@ -9,28 +9,12 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { app } from "../../firebase";
 import {
   styles,
   getTextPasswordStyles,
   getTextInputStyles,
 } from "./loginStyle";
-import { getAuth, Auth } from "firebase/auth";
 import Icon from "react-native-vector-icons/Feather";
-
-const authInstance: Auth = getAuth(app);
-
-type RootStackParamList = {
-  Login: undefined;
-  Home: undefined;
-  SignUp: undefined;
-  Welcome: undefined;
-};
-type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Welcome"
->;
 
 type Props = {
   email: any;

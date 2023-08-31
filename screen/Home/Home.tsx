@@ -13,29 +13,34 @@ import { styles } from "./HomeStyle";
 type HomeProps = {
   userName: any;
   handleLogout: any;
-  handleTask: any
+  handleTask: any;
   handleProfile: any;
   userCity: any;
   userGouv: any;
   photo: any;
 };
-const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handleProfile, userGouv, userCity, photo }) => {
+const Home: React.FC<HomeProps> = ({
+  userName,
+  handleLogout,
+  handleTask,
+  handleProfile,
+  userGouv,
+  userCity,
+  photo,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-      {photo ? (
-                <View>
-                  <Image
-                    source={{ uri: photo }}
-                    style={styles.image}
-                  />
-                </View>
-              ) : (
-                <Image
-                  source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
-                  style={styles.image}
-                />
-              )}
+        {photo ? (
+          <View>
+            <Image source={{ uri: photo }} style={styles.image} />
+          </View>
+        ) : (
+          <Image
+            source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+            style={styles.image}
+          />
+        )}
         <View style={styles.textContainer}>
           <Text style={styles.yourName2}>{userName}</Text>
           <Text style={styles.work}>student</Text>
@@ -85,10 +90,10 @@ const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handle
               style={styles.button4}
               onPress={() => handleLogout()}
             >
-                      <SimpleLineIconsIcon
-          name="notebook"
-          style={styles.resultsIcon}
-        ></SimpleLineIconsIcon>
+              <SimpleLineIconsIcon
+                name="notebook"
+                style={styles.resultsIcon}
+              ></SimpleLineIconsIcon>
               <Text style={styles.buttonText}>Results</Text>
             </TouchableOpacity>
           </View>
@@ -97,17 +102,17 @@ const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handle
               style={styles.button4}
               onPress={() => handleLogout()}
             >
-                      <FontAwesomeIcon
-          name="newspaper-o"
-          style={styles.newsIcon}
-        ></FontAwesomeIcon>
+              <FontAwesomeIcon
+                name="newspaper-o"
+                style={styles.newsIcon}
+              ></FontAwesomeIcon>
               <Text style={styles.buttonText}>News</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button4}
               onPress={() => handleProfile()}
             >
-                    <Ionicons name="ios-person" style={styles.profileIcon}></Ionicons>
+              <Ionicons name="ios-person" style={styles.profileIcon}></Ionicons>
               <Text style={styles.buttonText}>Profil</Text>
             </TouchableOpacity>
           </View>
@@ -116,14 +121,17 @@ const Home: React.FC<HomeProps> =  ({ userName, handleLogout, handleTask, handle
               style={styles.button4}
               onPress={() => handleLogout()}
             >
-                    <MaterialCommunityIcons name="message" style={styles.contactIcon}></MaterialCommunityIcons>
+              <MaterialCommunityIcons
+                name="message"
+                style={styles.contactIcon}
+              ></MaterialCommunityIcons>
               <Text style={styles.buttonText}>Contact us</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button4}
               onPress={() => handleLogout()}
             >
-               <Feather name="log-out" style={styles.LogOutIcon}></Feather>
+              <Feather name="log-out" style={styles.LogOutIcon}></Feather>
               <Text style={styles.buttonText}>Log out</Text>
             </TouchableOpacity>
           </View>

@@ -1,15 +1,11 @@
 import React, { useRef, useState } from "react";
-import {
-  TextInput,
-} from "react-native";
+import { TextInput } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { app } from "../../firebase";
 import { getAuth, signInWithEmailAndPassword, Auth } from "firebase/auth";
 import LOGIN from "./Login";
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../../Redux/userActions';
+import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import firebase from "firebase/compat";
 
 const authInstance: Auth = getAuth(app);
 
@@ -29,7 +25,7 @@ type Props = {
 };
 
 const LoginContainer: React.FC<Props> = ({ navigation }) => {
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [city, setCity] = useState("");
@@ -41,8 +37,6 @@ const LoginContainer: React.FC<Props> = ({ navigation }) => {
   const passwordInputRef = useRef<TextInput | null>(null);
 
   const handleLogin = async () => {
-    console.log("username: ", email);
-    console.log("password: ", password);
     if (!email || !password) {
       setErrorText("Please provide both email and password.");
       return;
@@ -54,30 +48,13 @@ const LoginContainer: React.FC<Props> = ({ navigation }) => {
         password
       );
       const user = userCredential.user;
-      const userRef = firebase.firestore().collection('users').doc(user.uid);
 
-        userRef.get()
-          .then((doc) => {
-            if (doc.exists) {
-              const profileData = doc.data();
-              if(profileData){
-              console.log('User profile data:', profileData);
-              console.log('userGouuvvvvvv', profileData.gouvernemet)
-              dispatch(updateUser(email, user.displayName, user.photoURL, profileData.city, profileData.gouvernemet));
-              }
-
-            } else {
-              console.log('No user profile data found.');
-            }
-          })
-
-      if(password){
-        await AsyncStorage.setItem("password", password)
+      if (password) {
+        await AsyncStorage.setItem("password", password);
       }
       setEmail("");
       setPassword("");
       console.log(user);
-
     } catch (error) {
       console.log("error");
       setErrorText("Wrong Email or Password.");
@@ -94,13 +71,13 @@ const LoginContainer: React.FC<Props> = ({ navigation }) => {
   };
   const handleGoBack = () => {
     if (navigation.canGoBack()) {
-        navigation.goBack();
-      } else {
-        navigation.navigate("Welcome");
-      }
-      setEmail("");
-      setPassword("");
-      setErrorText("");
+      navigation.goBack();
+    } else {
+      navigation.navigate("Welcome");
+    }
+    setEmail("");
+    setPassword("");
+    setErrorText("");
   };
 
   return (
@@ -121,7 +98,7 @@ const LoginContainer: React.FC<Props> = ({ navigation }) => {
       setSelectedPasswordInput={setSelectedPasswordInput}
       passwordInputRef={passwordInputRef}
     />
-);
+  );
 };
 
 export default LoginContainer;

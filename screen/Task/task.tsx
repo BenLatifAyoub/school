@@ -1,101 +1,38 @@
-import React, { useState } from "react";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Calendar } from "react-native-calendars";
 import { styles } from "./TaskStyle";
-import { useSelector } from "react-redux";
-
-type RootStackParamList = {
-  Home: undefined;
-  AddTask: undefined;
-};
-type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Home"
->;
 
 type Props = {
-  navigation: LoginScreenNavigationProp;
+  handleEdit: any;
+  handleGoBack: any;
+  handleAddTask: any;
+  countTasksForSelectedDate: any;
+  formatDate: any;
+  generateMarkedDates: any;
+  selectedDate: any;
+  setSelectedDate: any;
+  tasks: any;
+  tas: any;
 };
 
-const Tasks: React.FC<Props> = ({ navigation }) => {
+const Taskk: React.FC<Props> = ({
+  handleEdit,
+  handleGoBack,
+  handleAddTask,
+  countTasksForSelectedDate,
+  formatDate,
+  generateMarkedDates,
+  selectedDate,
+  setSelectedDate,
+  tasks,
+  tas,
+}) => {
   const getCurrentDate = () => {
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split("T")[0];
     return formattedDate;
-  };
-  let tas = false;
-  const [selectedDate, setSelectedDate] = useState<string>(getCurrentDate());
-  const tasks = useSelector((state: any) => state.user.tasks);
-  console.log("task", tasks);
-
-  const generateMarkedDates = () => {
-    const markedDates: Record<string, any> = {};
-
-    tasks.forEach((task: any) => {
-      markedDates[task.date] = { marked: true, dotColor: "#E3AD6A" };
-      if (task.date === getCurrentDate()) {
-        tas = true;
-      }
-    });
-
-    return markedDates;
-  };
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-  const handleAddTask = () => {
-    navigation.navigate("AddTask");
-  };
-
-  const countTasksForSelectedDate = () => {
-    if (!selectedDate) {
-      return 0;
-    }
-
-    const count = tasks.filter(
-      (task: any) => task.date === selectedDate
-    ).length;
-    return count;
-  };
-
-  const formatDate = (inputDate: string) => {
-    const date = new Date(inputDate);
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    const day = date.getDate();
-    const monthIndex = date.getMonth();
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = months[monthIndex];
-
-    if (date.toDateString() === today.toDateString()) {
-      return "Today";
-    } else if (date.toDateString() === tomorrow.toDateString()) {
-      return "Tomorrow";
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      return "Yesterday";
-    } else {
-      return `${day} ${month}`;
-    }
   };
 
   return (
@@ -151,7 +88,10 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
             .filter((task: any) => task.date === selectedDate)
             .map((task: any, index: any) => (
               <View key={index} style={styles.taskItem}>
-                <TouchableOpacity style={styles.taskButton}>
+                <TouchableOpacity
+                  style={styles.taskButton}
+                  onPress={() => handleEdit(task)}
+                >
                   <View style={styles.row}>
                     <Text> {task.time} </Text>
                     <View
@@ -175,12 +115,12 @@ const Tasks: React.FC<Props> = ({ navigation }) => {
             </View>
           )}
         </ScrollView>
-          <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
-            <Icon name="plus-circle" style={styles.addIcon}></Icon>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+          <Icon name="plus-circle" style={styles.addIcon}></Icon>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default Tasks;
+export default Taskk;

@@ -2,6 +2,7 @@ export interface Task {
   date: string;
   time: string;
   disc: string;
+  id: any;
 }
 
 export interface UserState {
@@ -18,8 +19,8 @@ const initialState: UserState = {
   email: "",
   photoUrl: "",
   tasks: [],
-  city:'',
-  gouv:"",
+  city: "",
+  gouv: "",
 };
 
 const userReducer = (state = initialState, action: any) => {
@@ -44,8 +45,17 @@ const userReducer = (state = initialState, action: any) => {
         ...state,
         tasks: [...state.tasks, action.payload],
       };
-      case "UPDATE_TASKS":
-        return { ...state, tasks: action.payload };
+    case "UPDATE_TASKS":
+      return { ...state, tasks: action.payload };
+    case "EDIT_TASK":
+      const modifiedTask = action.payload;
+      const modifiedTasks = state.tasks.map((task) =>
+        task.id === modifiedTask.id ? modifiedTask : task
+      );
+      return {
+        ...state,
+        tasks: modifiedTasks,
+      };
     default:
       return state;
   }

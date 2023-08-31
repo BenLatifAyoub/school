@@ -9,8 +9,8 @@ import {
   Auth,
 } from "firebase/auth";
 import SignUp from "./SignUp";
-import { useDispatch } from 'react-redux';
-import { updateUser } from '../../Redux/userActions';
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../Redux/userActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const authInstance: Auth = getAuth(app);
@@ -19,10 +19,11 @@ type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   SignUp: undefined;
+  Welcome: undefined;
 };
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Login"
+  "Welcome"
 >;
 
 type Props = {
@@ -30,8 +31,8 @@ type Props = {
 };
 
 const SignUpContainer: React.FC<Props> = ({ navigation }) => {
-    const dispatch = useDispatch(); 
-    const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [selectedNameInput, setSelectedNameInput] = useState("");
@@ -51,7 +52,7 @@ const SignUpContainer: React.FC<Props> = ({ navigation }) => {
       return;
     }
     try {
-      dispatch(updateUser(email, name));  
+      dispatch(updateUser(email, name, "", "", ""));
       const userCredential = await createUserWithEmailAndPassword(
         authInstance,
         email,
@@ -62,8 +63,8 @@ const SignUpContainer: React.FC<Props> = ({ navigation }) => {
       await updateProfile(user, {
         displayName: name,
       });
-      if(password){
-        await AsyncStorage.setItem("password", password)
+      if (password) {
+        await AsyncStorage.setItem("password", password);
       }
       setName("");
       setEmail("");

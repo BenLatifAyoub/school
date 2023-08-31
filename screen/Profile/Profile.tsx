@@ -1,47 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-import { useSelector } from "react-redux";
 import { Feather } from "@expo/vector-icons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { styles } from "./ProfileStyles";
 import { AntDesign } from "@expo/vector-icons";
-import { app } from "../../firebase";
-import { getAuth } from "firebase/auth";
-
-const auth = getAuth(app);
-type RootStackParamList = {
-  Home: undefined;
-  Profil: undefined;
-  ProfilD: undefined;
-};
-type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Home"
->;
 
 type Props = {
-  navigation: LoginScreenNavigationProp;
+  handleButton: any;
+  handleGoBack: any;
+  photo: any;
+  userCity: any;
+  userGouv: any;
+  userName: any;
 };
 
-const Profil: React.FC<Props> = ({ navigation }) => {
-  const userEmail = useSelector((state: any) => state.user.email);
-  const userName = useSelector((state: any) => state.user.username);
-  const photo = useSelector((state: any) => state.user.photoUrl);
-  const userCity = useSelector((state: any) => state.user.city);
-  const userGouv = useSelector((state: any) => state.user.gouv);
-  console.log('user', userName)
-
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
-  const handleButton = () => {
-    navigation.navigate('ProfilD')
-  };
-
+const Profil: React.FC<Props> = ({
+  handleButton,
+  handleGoBack,
+  photo,
+  userCity,
+  userGouv,
+  userName,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -52,19 +33,16 @@ const Profil: React.FC<Props> = ({ navigation }) => {
       </View>
       <View style={styles.menu}>
         <View style={styles.row}>
-        {photo ? (
-                <View>
-                  <Image
-                    source={{ uri: photo }}
-                    style={styles.image}
-                  />
-                </View>
-              ) : (
-                <Image
-                  source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
-                  style={styles.image}
-                />
-              )}
+          {photo ? (
+            <View>
+              <Image source={{ uri: photo }} style={styles.image} />
+            </View>
+          ) : (
+            <Image
+              source={require("../../assets/8518144-startup-life-illustration-concept-vectoriel.png")}
+              style={styles.image}
+            />
+          )}
           <View style={styles.textContainer}>
             <Text style={styles.yourName2}>{userName}</Text>
             <Text style={styles.work}>student</Text>
@@ -86,7 +64,12 @@ const Profil: React.FC<Props> = ({ navigation }) => {
                 <Text style={{ marginLeft: 10 }}>Profile Details</Text>
                 <Text style={{ marginLeft: 10 }}> View & Edit details</Text>
               </View>
-              <AntDesign name="right" size={24} color="#E3AD6A" marginLeft={200}/>
+              <AntDesign
+                name="right"
+                size={24}
+                color="#E3AD6A"
+                marginLeft={200}
+              />
             </View>
           </TouchableOpacity>
         </View>

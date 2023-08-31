@@ -100,7 +100,8 @@ export const getTextPasswordStyles = (selectedPasswordInput: string) => {
     height: 40,
     width: 340,
     borderBottomWidth: 1,
-    borderColor: selectedPasswordInput === "password" ? "rgba(85,103,248,1)" : "black",
+    borderColor:
+      selectedPasswordInput === "password" ? "rgba(85,103,248,1)" : "black",
     textAlign: "left",
     backgroundColor: "rgba(255,255,255,1)",
     borderStyle: "solid",
@@ -125,7 +126,8 @@ export const getTextEmailStyles = (selectedEmailInput: string) => {
     height: 40,
     width: 340,
     borderBottomWidth: 1,
-    borderColor: selectedEmailInput === "email" ? "rgba(85,103,248,1)" : "black",
+    borderColor:
+      selectedEmailInput === "email" ? "rgba(85,103,248,1)" : "black",
     textAlign: "left",
     backgroundColor: "rgba(255,255,255,1)",
     borderStyle: "solid",

@@ -6,7 +6,8 @@ export const getTextTitleStyles = (selectedEmailInput: string) => {
     height: 70,
     width: 340,
     borderBottomWidth: 1,
-    borderColor: selectedEmailInput === "title" ? "#E3AD6A" : "black",
+    borderColor:
+      selectedEmailInput === "title" ? "#E3AD6A" : "black",
     textAlign: "left",
     backgroundColor: "rgba(255,255,255,1)",
     borderStyle: "solid",
@@ -40,8 +41,8 @@ export const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     marginTop: 25,
     borderRadius: 30,
-    alignContent: "center",
-    alignItems: "center",
+    alignContent: 'center',
+    alignItems: 'center',
   },
   button: {
     width: 50,
@@ -65,6 +66,7 @@ export const styles = StyleSheet.create({
     marginTop: 50,
     backgroundColor: "#E3AD6A",
   },
+
 
   Donebutton: {
     width: 50,

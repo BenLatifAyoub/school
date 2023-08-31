@@ -5,17 +5,28 @@ import HomeContainer from "./screen/Home/HomeContainer";
 import LoginContainer from "./screen/Login/LoginContainer";
 import SignUpContainer from "./screen/SignUp/SignUpContainer";
 import WelcomeContainer from "./screen/Welcome/WelcomeContainer";
-import Profil from "./screen/Profile/Profile";
-import ProfilD from "./screen/ProfileDetails/profileD";
-import Task from "./screen/Task/task";
-import AddTask from "./screen/AddTask/AddTask";
-import { getAuth, onAuthStateChanged, initializeAuth, signInWithEmailAndPassword } from "firebase/auth";
+import ProfilContainer from "./screen/Profile/ProfileContainer";
+import ProfilDContainer from "./screen/ProfileDetails/ProfileDetailsContainer";
+import TaskContaniner from "./screen/Task/taskContainer";
+import AddTaskContaniner from "./screen/AddTask/AddTaskContainer";
+import EditTaskContanier from "./screen/EditTasks/EditTaskContainer";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { app } from "./firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
 import * as Notifications from "expo-notifications";
-import { updateUser, updateTasks } from "./Redux/userActions";
+import {
+  updateUser,
+  updateTasks,
+  updateUsername,
+  updateEmail,
+  updatePassword,
+} from "./Redux/userActions";
 import firebase from "firebase/compat";
 
 const Stack = createStackNavigator();
@@ -43,16 +54,18 @@ export default function App() {
 
     const checkAuthState = async () => {
       try {
-        const value = await AsyncStorage.getItem("isSignedIn");
-        setIsSignedIn(value === "true");
-
-        const storedUsername = await AsyncStorage.getItem("username");
+        const storedIsSignedIN = await AsyncStorage.getItem("isSignedIn");
+        const storedTasks = await AsyncStorage.getItem("tasks");
+        if (storedIsSignedIN === "true") {
+          const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
+          console.log("taskkkkkkkkkkk", storedTasks);
+          store.dispatch(updateTasks(parsedTasks));
+        }
         const storedEmail = await AsyncStorage.getItem("email");
         const storedPassword = await AsyncStorage.getItem("password");
-        const storedPhoto = await AsyncStorage.getItem('photo');
-        const storedCity = await AsyncStorage.getItem('city');
-        const storedGouv = await AsyncStorage.getItem('gouv');
-        console.log("password",storedPassword)
+
+        console.log("email", storedEmail);
+        console.log("password", storedPassword);
         try {
           if (storedEmail && storedPassword) {
             const userCredential = await signInWithEmailAndPassword(
@@ -60,54 +73,78 @@ export default function App() {
               storedEmail,
               storedPassword
             );
-            console.log(userCredential)
-            await AsyncStorage.setItem("password",storedPassword)
+            if (storedTasks) {
+              await AsyncStorage.setItem("tasks", storedTasks);
+            }
+
+            await AsyncStorage.setItem("password", storedPassword);
           }
-        } catch (error) {
-          
-        }
-
-   
-        store.dispatch(updateUser(storedEmail, storedUsername, storedPhoto, storedCity, storedGouv));
-
-        const storedTasks = await AsyncStorage.getItem("tasks");
-        const parsedTasks = storedTasks ? JSON.parse(storedTasks) : [];
-
-        store.dispatch(updateTasks(parsedTasks));
+        } catch (error) {}
       } catch (error) {
         console.error("Error reading authentication state:", error);
       }
     };
 
     const unsubscribe = onAuthStateChanged(authInstance, async (user) => {
-      setIsSignedIn(!!user);
       try {
         if (user) {
-          await AsyncStorage.setItem("isSignedIn", "true");
-          const userRef = firebase.firestore().collection('users').doc(user.uid);
-          userRef.get()
-          .then(async (doc) => {
+          console.log("userApp", user);
+          let city = "";
+          let gouvernemet = "";
+          const userRef = firebase
+            .firestore()
+            .collection("users")
+            .doc(user.uid);
+          userRef.get().then(async (doc) => {
             if (doc.exists) {
               const profileData = doc.data();
-              if(profileData){
+              if (profileData) {
+                city = profileData.city;
+                gouvernemet = profileData.gouvernemet;
                 await AsyncStorage.setItem("city", profileData.city);
                 await AsyncStorage.setItem("gouv", profileData.gouvernemet);
-              }
-              console.log('User profile data:', profileData);
-            } else {
-              console.log('No user profile data found.');
-            }
-          })
-          if (user.displayName) {
-            await AsyncStorage.setItem("username", user.displayName);
-          }
 
-          if (user.email) {
-            await AsyncStorage.setItem("email", user.email);
-          }
-          if (user.photoURL) {
-            await AsyncStorage.setItem("photo", user.photoURL)
-          }
+                if (user.displayName) {
+                  await AsyncStorage.setItem("username", user.displayName);
+                }
+
+                if (user.email) {
+                  await AsyncStorage.setItem("email", user.email);
+                }
+                if (user.photoURL) {
+                  await AsyncStorage.setItem("photo", user.photoURL);
+                }
+
+                store.dispatch(
+                  updateUser(
+                    user.email,
+                    user.displayName,
+                    user.photoURL,
+                    city,
+                    gouvernemet
+                  )
+                );
+                console.log("we are here");
+              }
+              setIsSignedIn(!!user);
+              await AsyncStorage.setItem("isSignedIn", "true");
+            } else {
+              if (user.displayName) {
+                await AsyncStorage.setItem("username", user.displayName);
+                store.dispatch(updateUsername(user.displayName));
+              }
+              if (user.email) {
+                await AsyncStorage.setItem("email", user.email);
+                store.dispatch(updateEmail(user.email));
+              }
+              if (user.photoURL) {
+                await AsyncStorage.setItem("photo", user.photoURL);
+                store.dispatch(updatePassword(user.photoURL));
+              }
+              setIsSignedIn(!!user);
+              await AsyncStorage.setItem("isSignedIn", "true");
+            }
+          });
         } else {
           await AsyncStorage.removeItem("isSignedIn");
           await AsyncStorage.removeItem("tasks");
@@ -115,6 +152,7 @@ export default function App() {
           await AsyncStorage.removeItem("email");
           await AsyncStorage.removeItem("photo");
           await AsyncStorage.removeItem("password");
+          setIsSignedIn(!!user);
         }
       } catch (error) {
         console.error("Error saving authentication state:", error);
@@ -142,22 +180,27 @@ export default function App() {
               />
               <Stack.Screen
                 name="Task"
-                component={Task}
+                component={TaskContaniner}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="AddTask"
-                component={AddTask}
+                component={AddTaskContaniner}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="EditTask"
+                component={EditTaskContanier}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="Profil"
-                component={Profil}
+                component={ProfilContainer}
                 options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="ProfilD"
-                component={ProfilD}
+                component={ProfilDContainer}
                 options={{ headerShown: false }}
               />
             </>
