@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   imageContainer: {
-    position: "relative", // Required for absolute positioning
+    position: "relative", 
   },
   image: {
     marginTop: 20,
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   },
   editIcon: {
     position: "absolute",
-    backgroundColor: "transparent", // Make the icon background transparent
+    backgroundColor: "transparent",
   },
   textContainer: {
     flexDirection: "column",

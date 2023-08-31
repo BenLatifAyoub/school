@@ -23,7 +23,6 @@ export const uriToBlob = (uri: string) => {
   return new Promise<Blob>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
-      // return the blob
       resolve(xhr.response);
     };
     xhr.onerror = function () {
@@ -46,7 +45,7 @@ const uploadImage = async (uri: any, name: string, folder: string) => {
     const url = await getDownloadURL(storageRef);
 
     console.log("urlfireeee", url);
-    return url; // Return the URL after successful upload
+    return url;
   } catch (err) {
     console.log(err);
     return null;

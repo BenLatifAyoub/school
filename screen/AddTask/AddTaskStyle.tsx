@@ -77,8 +77,8 @@ export const styles = StyleSheet.create({
     height: 200,
   },
   calendar: {
-    backgroundColor: "white", // Set the background color
-    borderWidth: 1, // You can adjust these values as needed
+    backgroundColor: "white", 
+    borderWidth: 1, 
     borderColor: "#E3AD6A",
   },
 });
